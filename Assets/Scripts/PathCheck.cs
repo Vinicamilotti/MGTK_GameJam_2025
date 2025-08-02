@@ -1,23 +1,27 @@
 using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 public class PathCheck : MonoBehaviour
 {
     public GameObject player;
     public GameObject path;
     public GameObject startPath;
-    public GameObject midPath;
+    public List<GameObject> midPath;
     public GameObject endPath;
 
     PolygonCollider2D pathCollider;
     PolygonCollider2D startPathCollider;
     PolygonCollider2D endPathCollider;
-    PolygonCollider2D midPathCollider;
+    Dictionary<PolygonCollider2D, bool> midPathColliderDict = new();
 
     public GameObject message;
 
     TextMeshPro textMessage;
     PlayerMovement playerMovement;
+    
+
 
     bool middlePointReached = false;
 
@@ -32,9 +36,15 @@ public class PathCheck : MonoBehaviour
         pathCollider = path.GetComponent<PolygonCollider2D>();
         startPathCollider = startPath.GetComponent<PolygonCollider2D>();
         endPathCollider = endPath.GetComponent<PolygonCollider2D>();
-        midPathCollider = midPath.GetComponent<PolygonCollider2D>();
         playerMovement = player.GetComponent<PlayerMovement>();
         textMessage = message.GetComponent<TextMeshPro>();
+        foreach(var midpoints in midPath)
+        {
+            if (midpoints.TryGetComponent(out PolygonCollider2D collider))
+            {
+                midPathColliderDict.Add(collider, false);
+            }
+        }
     }
 
     float GetDistance(PolygonCollider2D collider, Vector2 position)
@@ -65,8 +75,22 @@ public class PathCheck : MonoBehaviour
         {
             return;
         }
-        float distance = GetDistance(midPathCollider, airplanePosition);
-        middlePointReached = distance == 0;
+        
+        foreach (var midPathCollider in midPathColliderDict)
+        {
+            if(midPathCollider.Value)
+            {
+                continue;
+            }
+            var distance = GetDistance(midPathCollider.Key, airplanePosition);
+            if (distance == 0)
+            {
+                midPathColliderDict[midPathCollider.Key] = true;
+            }
+            
+        }
+
+       middlePointReached = midPathColliderDict.Values.All(x => x);
     }
     bool CheckEnd(Vector2 airplanePosition)
     {
