@@ -12,11 +12,14 @@ public class PathCheck : MonoBehaviour
     PolygonCollider2D pathCollider;
     PolygonCollider2D startPathCollider;
     PolygonCollider2D endPathCollider;
+    PolygonCollider2D midPathCollider;
 
     public GameObject message;
 
     TextMeshPro textMessage;
     PlayerMovement playerMovement;
+
+    bool middlePointReached = false;
 
     bool isOnPath = false;
 
@@ -29,37 +32,56 @@ public class PathCheck : MonoBehaviour
         pathCollider = path.GetComponent<PolygonCollider2D>();
         startPathCollider = startPath.GetComponent<PolygonCollider2D>();
         endPathCollider = endPath.GetComponent<PolygonCollider2D>();
+        midPathCollider = midPath.GetComponent<PolygonCollider2D>();
         playerMovement = player.GetComponent<PlayerMovement>();
         textMessage = message.GetComponent<TextMeshPro>();
     }
 
+    float GetDistance(PolygonCollider2D collider, Vector2 position)
+    {
+        // 1. Find the closest point on the path collider to the airplane
+        Vector2 closestPoint = collider.ClosestPoint(position);
+        float distance = Vector2.Distance(position, closestPoint);
+        return distance;
+    }
+
     void SetStarted(Vector2 airplanePosition)
     {
-        if(started)
+        if (started)
         {
             return;
         }
-        var startPoint = startPathCollider.ClosestPoint(airplanePosition);
-        float distance = Vector2.Distance(airplanePosition, startPoint);
-
+        var distance = GetDistance(startPathCollider, airplanePosition);
         started = distance == 0 || started;
+    }
+
+    void MidlePointCheck(Vector2 airplanePosition)
+    {
+        if (middlePointReached)
+        {
+            return;
+        }
+        if (!started)
+        {
+            return;
+        }
+        float distance = GetDistance(midPathCollider, airplanePosition);
+        middlePointReached = distance == 0;
     }
     bool CheckEnd(Vector2 airplanePosition)
     {
-        if(!started)
-        {
-            return false;
-        };
-
-        if(!canContinue)
+        if (!started)
         {
             return false;
         }
-        var endtPoint = endPathCollider.ClosestPoint(airplanePosition);
-        float distance = Vector2.Distance(airplanePosition, endtPoint);
-    
-        return distance == 0;
+        ;
 
+        if (!canContinue)
+        {
+            return false;
+        }
+        var distance = GetDistance(endPathCollider, airplanePosition);
+        return distance == 0;
     }
     // Update is called once per frame
     void Update()
@@ -75,7 +97,7 @@ public class PathCheck : MonoBehaviour
         }
 
         SetStarted(airplanePosition);
-         
+
         if (!started)
         {
             return;
@@ -89,8 +111,8 @@ public class PathCheck : MonoBehaviour
         canContinue = true;
         // 4. Check if the distance is within our allowed error margin
         isOnPath = distance <= 1f;
- 
-        if(CheckEnd(airplanePosition) && canContinue)
+
+        if (CheckEnd(airplanePosition) && canContinue)
         {
             Debug.Log("End of path reached!");
             textMessage.SetText("Congrats!");
@@ -102,8 +124,8 @@ public class PathCheck : MonoBehaviour
         // You can use this 'isOnPath' boolean for your game logic
         if (!isOnPath)
         {
-           textMessage.SetText("Try again");
-           canContinue = false;
+            textMessage.SetText("Try again");
+            canContinue = false;
         }
 
     }
