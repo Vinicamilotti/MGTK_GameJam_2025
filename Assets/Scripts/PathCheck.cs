@@ -11,6 +11,8 @@ public enum Levels : byte
     Level1,
     Level2,
     Level3,
+    Level4,
+    Level5,
     End,
 }
 public class PathCheck : MonoBehaviour

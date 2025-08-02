@@ -654,7 +654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 452a0c2011566be45a5b2dfa7178ab6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextLevel: 4
+  nextLevel: 5
   player: {fileID: 1776846063}
   path: {fileID: 1040503032}
   startPath: {fileID: 1757511346}
@@ -840,7 +840,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -646.37, y: -610.44}
+  m_AnchoredPosition: {x: -640.81, y: -610.02}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1130216123
@@ -1295,7 +1295,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1729910760}
   m_Layer: 0
-  m_Name: Fase2
+  m_Name: Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1309,8 +1309,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1729910759}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.79565, y: -4.59908, z: 0}
+  m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
+  m_LocalPosition: {x: -5.46, y: 3.96, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1321,7 +1321,7 @@ Transform:
   - {fileID: 1757511347}
   - {fileID: 1778703675}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 180}
 --- !u!1 &1757511346
 GameObject:
   m_ObjectHideFlags: 0
