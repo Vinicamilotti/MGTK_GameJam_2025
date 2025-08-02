@@ -86,12 +86,10 @@ public class PathCheck : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         Vector2 airplanePosition = player.transform.position;
         if (playerMovement.GetState() == PlayerSate.Moving)
         {
-            started = false;
-            canContinue = false;
+            ResetState();
             textMessage.SetText("");
             return;
         }
@@ -104,6 +102,8 @@ public class PathCheck : MonoBehaviour
         }
 
         textMessage.SetText("Loop!");
+
+        MidlePointCheck(airplanePosition);
         // 2. Find the closest point on the path collider to the airplane
         closestPointOnPath = pathCollider.ClosestPoint(airplanePosition);
         // 3. Calculate the distance between the airplane and that closest point
@@ -112,12 +112,17 @@ public class PathCheck : MonoBehaviour
         // 4. Check if the distance is within our allowed error margin
         isOnPath = distance <= 1f;
 
-        if (CheckEnd(airplanePosition) && canContinue)
+        if (CheckEnd(airplanePosition))
         {
+            if(!canContinue || !middlePointReached)
+            {
+                textMessage.SetText("Try Again");
+                ResetState();
+                return;
+            }
             Debug.Log("End of path reached!");
             textMessage.SetText("Congrats!");
-            started = false;
-            canContinue = false;
+            ResetState();
             return;
         }
 
@@ -125,9 +130,14 @@ public class PathCheck : MonoBehaviour
         if (!isOnPath)
         {
             textMessage.SetText("Try again");
-            canContinue = false;
+            ResetState();
         }
 
     }
 
+    private void ResetState()
+    {
+        canContinue = false;
+        started = false;
+    }
 }
