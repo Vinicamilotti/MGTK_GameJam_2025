@@ -162,7 +162,7 @@ public class PathCheck : MonoBehaviour
             }
             Debug.Log("End of path reached!");
             textMessage.SetText("Congrats!");
-            Invoke(nameof(GoToNextLevel), 2f );
+            Invoke(nameof(GoToNextLevel), 1f );
             ResetState();
             return;
         }
