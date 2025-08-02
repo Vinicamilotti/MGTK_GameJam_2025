@@ -2,7 +2,6 @@ using TMPro;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.SearchService;
 using UnityEngine.SceneManagement;
 
 public enum Levels : byte
