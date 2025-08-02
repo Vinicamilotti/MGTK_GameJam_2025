@@ -2,9 +2,20 @@ using TMPro;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.SearchService;
+using UnityEngine.SceneManagement;
 
+public enum Levels : byte
+{
+    Tutorial,
+    Level1,
+    Level2,
+    Level3,
+    End,
+}
 public class PathCheck : MonoBehaviour
 {
+    public Levels nextLevel;
     public GameObject player;
     public GameObject path;
     public GameObject startPath;
@@ -31,9 +42,9 @@ public class PathCheck : MonoBehaviour
     bool canContinue;
     Vector2 closestPointOnPath;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void OnEnable()
     {
-        pathCollider = path.GetComponent<PolygonCollider2D>();
+         pathCollider = path.GetComponent<PolygonCollider2D>();
         startPathCollider = startPath.GetComponent<PolygonCollider2D>();
         endPathCollider = endPath.GetComponent<PolygonCollider2D>();
         playerMovement = player.GetComponent<PlayerMovement>();
@@ -45,8 +56,9 @@ public class PathCheck : MonoBehaviour
                 midPathColliderDict.Add(collider, false);
             }
         }
-    }
 
+    }
+    
     float GetDistance(PolygonCollider2D collider, Vector2 position)
     {
         // 1. Find the closest point on the path collider to the airplane
@@ -76,7 +88,7 @@ public class PathCheck : MonoBehaviour
             return;
         }
         
-        foreach (var midPathCollider in midPathColliderDict)
+        foreach (var midPathCollider in midPathColliderDict.ToList())
         {
             if(midPathCollider.Value)
             {
@@ -86,7 +98,9 @@ public class PathCheck : MonoBehaviour
             if (distance == 0)
             {
                 midPathColliderDict[midPathCollider.Key] = true;
+                continue;
             }
+            midPathColliderDict[midPathCollider.Key] = false;
             
         }
 
@@ -146,6 +160,7 @@ public class PathCheck : MonoBehaviour
             }
             Debug.Log("End of path reached!");
             textMessage.SetText("Congrats!");
+            Invoke(nameof(GoToNextLevel), 2f );
             ResetState();
             return;
         }
@@ -159,8 +174,19 @@ public class PathCheck : MonoBehaviour
 
     }
 
+    void GoToNextLevel()
+    {
+        string lvlName = nextLevel.ToString();
+        SceneManager.LoadScene(lvlName);
+    }
+
     private void ResetState()
     {
+        foreach(var entry in midPathColliderDict.ToList())
+        {
+            midPathColliderDict[entry.Key] = false;
+        }
+        middlePointReached = false;
         canContinue = false;
         started = false;
     }
