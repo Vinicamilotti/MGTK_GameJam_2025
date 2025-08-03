@@ -92,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
 
     void ResetLevel() 
     {
-            rb.linearVelocity = 0;
+            rb.linearVelocity = new Vector2(0,0);
             transform.position = ResetPosition.position;
        
     }
