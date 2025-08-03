@@ -90,8 +90,9 @@ public class PlayerMovement : MonoBehaviour
         Moving();
     }
 
-    void ResetLevel() {
-    
+    void ResetLevel() 
+    {
+            rb.linearVelocity = 0;
             transform.position = ResetPosition.position;
        
     }
@@ -99,9 +100,9 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         rb.linearDamping = drag;
-        if(Reset.IsPressed())
+        if(reset.IsPressed())
         { 
-            ResetLevel()
+            ResetLevel();
         }
         UpdateState();
         UpdateInput();
