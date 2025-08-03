@@ -8,6 +8,7 @@ public enum PlayerSate : byte
 }
 public class PlayerMovement : MonoBehaviour
 {
+    public Transform ResetPosition;
     PlayerSate playerState = PlayerSate.Moving;
     public float speed = 5f;
     public float acceleration;
@@ -15,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     InputAction move;
     InputAction control;
+    InputAction reset;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     float xInput;
     float yInput;
