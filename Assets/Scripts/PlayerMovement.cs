@@ -32,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     {
         move = InputSystem.actions.FindAction("Move");
         control = InputSystem.actions.FindAction("Action");
+        reset = InputSystem.actions.FindAction("Reset");
     }
     private void OnEnable()
     {
@@ -88,9 +89,20 @@ public class PlayerMovement : MonoBehaviour
         }
         Moving();
     }
+
+    void ResetLevel() {
+    
+            transform.position = ResetPosition.position;
+       
+    }
+
     private void FixedUpdate()
     {
         rb.linearDamping = drag;
+        if(Reset.IsPressed())
+        { 
+            ResetLevel()
+        }
         UpdateState();
         UpdateInput();
         MovePlayer();
