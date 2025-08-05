@@ -1,6 +1,6 @@
 # Libas, the Pilot
 A game about Libas, the  "Esquadrilha da fumaça" cat pilot
-# About the MGTK 2025
+# About the GMTK 2025
 > The theme for GMTK Game Jam 2025 is "Loop"
 How you interpret this theme is entirely up to you.
 Perhaps it's about doing the exact same thing over and over again. Perhaps it's about racetracks, or programming instructions, or loop the loops.
